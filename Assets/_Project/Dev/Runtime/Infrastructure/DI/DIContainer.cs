@@ -1,0 +1,35 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace _Project.Dev.Runtime.Infrastructure.DI
+{
+    public class DIContainer
+    {
+        private readonly Dictionary<Type, object> _container = new();
+    }
+     
+    public class Registration
+    {
+        private Func<DIContainer, object> _creator;
+        private object _cachedInstance;
+
+        public Registration(Func<DIContainer, object> creator)
+        {
+            _creator = creator;  
+        }
+
+        public object CreateInstanceFrom(DIContainer container)
+        {
+             if(_cachedInstance != null) return _cachedInstance;
+             
+             if (_creator == null)
+                 throw new InvalidOperationException("there is  no instance or creator"); 
+             
+             _cachedInstance = _creator.Invoke(container); 
+             
+              return _cachedInstance;
+        }
+    }
+}
