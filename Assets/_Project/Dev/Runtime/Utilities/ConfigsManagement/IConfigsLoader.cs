@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 namespace _Project.Dev.Runtime.Utilities.ConfigsManagment
 {
-  public interface IConfigsLoader 
-  {
-    IEnumerator LoadAsync(Action<Dictionary<Type, object>> onConfigLoaded);
-  }
-}
+    public interface IConfigsLoader
+    {
+        IEnumerator LoadAsync(Action<Dictionary<Type, object>> onConfigLoaded);
+    }
+} 

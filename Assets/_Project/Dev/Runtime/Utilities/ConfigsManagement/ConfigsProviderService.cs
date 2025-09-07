@@ -8,7 +8,7 @@ namespace _Project.Dev.Runtime.Utilities.ConfigsManagment
     public class ConfigsProviderService
     {
         private readonly Dictionary<Type, object> _configs = new();
-        private readonly IConfigsLoader[] _loaders;
+        private readonly IConfigsLoader[] _loaders; 
 
         public ConfigsProviderService(params IConfigsLoader[] loaders)
         {

@@ -1,35 +1,24 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace _Project.Dev.Runtime.Infrastructure.DI
 {
     public class DIContainer
     {
-        private readonly Dictionary<Type, object> _container = new();
-    }
-     
-    public class Registration
-    {
-        private Func<DIContainer, object> _creator;
-        private object _cachedInstance;
+        private readonly Dictionary<Type, Registration> _container = new();
 
-        public Registration(Func<DIContainer, object> creator)
+        public void RegisterAsSingle<T>(Func<DIContainer, T> creator)
         {
-            _creator = creator;  
+            Registration registration = new Registration(container => creator.Invoke(container));
+            _container.Add(typeof(T), registration);
         }
 
-        public object CreateInstanceFrom(DIContainer container)
+        public T Resolve<T>()      
         {
-             if(_cachedInstance != null) return _cachedInstance;
-             
-             if (_creator == null)
-                 throw new InvalidOperationException("there is  no instance or creator"); 
-             
-             _cachedInstance = _creator.Invoke(container); 
-             
-              return _cachedInstance;
+            if (_container.TryGetValue(typeof(T), out Registration registration))
+                return (T)registration.CreateInstanceFrom(this);
+
+            throw new InvalidOperationException($"No registration for type {typeof(T)}");
         }
     }
 }
