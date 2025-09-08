@@ -12,7 +12,7 @@ namespace _Project.Dev.Runtime.Utilities.ConfigsManagment
 
         private readonly Dictionary<Type, string> _configResoursesPaths = new()
         {
-            {typeof(TestConfig), "TestConfig"},
+          
         };
   
         public ResourcesConfigsLoader(ResourcesAssetsLoader resources)
