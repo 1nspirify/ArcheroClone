@@ -16,9 +16,9 @@ namespace _Project.Dev.Runtime.Infrastructure.EntryPoint
             Debug.Log($"Project has been initialized. Setup Settings");
             SetupAppSettings();
             Debug.Log($"Services registrations of entire project");
-            DIContainer container = new DIContainer();
-            EntryPointRegistrations.Process(container);
-            container.Resolve<ICoroutinesPerformer>().StartPerform(Initialize(container));
+            DIContainer projectContainer = new DIContainer();
+            ProjectContextRegistrations.Process(projectContainer);
+            projectContainer.Resolve<ICoroutinesPerformer>().StartPerform(Initialize(projectContainer));
         }
 
         private void SetupAppSettings()

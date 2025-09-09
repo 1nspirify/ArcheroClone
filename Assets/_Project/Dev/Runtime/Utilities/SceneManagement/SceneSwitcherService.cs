@@ -3,7 +3,6 @@ using System.Collections;
 using _Project.Dev.Runtime.Infrastructure;
 using _Project.Dev.Runtime.Infrastructure.DI;
 using _Project.Dev.Runtime.Utilities.LoadingScreen;
-using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace _Project.Dev.Runtime.Utilities.SceneManagement
@@ -12,14 +11,14 @@ namespace _Project.Dev.Runtime.Utilities.SceneManagement
     {
         private readonly SceneLoaderService _sceneLoaderService;
         private readonly ILoadingScreen _loadingScreen;
-        private readonly DIContainer _container;
+        private readonly DIContainer _projectContainer;
 
         public SceneSwitcherService(SceneLoaderService sceneLoaderService, ILoadingScreen loadingScreen,
-            DIContainer container)
+            DIContainer projectContainer)
         {
             _sceneLoaderService = sceneLoaderService;
             _loadingScreen = loadingScreen;
-            _container = container;
+            _projectContainer = projectContainer;
         }
 
         public IEnumerator ProcessSwitchTo(string sceneName, IInputSceneArgs sceneArgs = null)
@@ -32,8 +31,12 @@ namespace _Project.Dev.Runtime.Utilities.SceneManagement
             SceneBootstrap sceneBootstrap = Object.FindObjectOfType<SceneBootstrap>();
             if (sceneBootstrap == null)
                 throw new NullReferenceException(nameof(sceneBootstrap) + " was not found");
+            
+            DIContainer sceneContainer = new DIContainer(_projectContainer);
+            
+            sceneBootstrap.ProcessRegisrations(sceneContainer, sceneArgs);
 
-            yield return sceneBootstrap.Initialize(_container, sceneArgs);
+            yield return sceneBootstrap.Initialize();
 
             _loadingScreen.Hide();
 

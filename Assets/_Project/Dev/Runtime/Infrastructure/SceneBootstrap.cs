@@ -7,7 +7,8 @@ namespace _Project.Dev.Runtime.Infrastructure
 {
     public abstract class SceneBootstrap : MonoBehaviour
     {
-        public abstract IEnumerator Initialize(DIContainer container, IInputSceneArgs sceneArgs = null);
+        public abstract void ProcessRegisrations(DIContainer container, IInputSceneArgs sceneArgs = null); 
+        public abstract IEnumerator Initialize();
 
         public abstract void Run();
     }

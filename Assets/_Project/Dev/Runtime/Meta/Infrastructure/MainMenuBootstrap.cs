@@ -12,10 +12,15 @@ namespace _Project.Dev.Runtime.Meta.Infrastructure
     {
         private DIContainer _container;
 
-        public override IEnumerator Initialize(DIContainer container, IInputSceneArgs sceneArgs)
+        public override void ProcessRegisrations(DIContainer container, IInputSceneArgs sceneArgs = null)
         {
-            _container = container;
+            _container = container; 
+             
+            MainMenuContextRegistrations.Process(_container); 
+        }
 
+        public override IEnumerator Initialize()
+        {
             Debug.Log($"Initializing Menu scene");
 
             yield break;
@@ -32,7 +37,8 @@ namespace _Project.Dev.Runtime.Meta.Infrastructure
             {
                 SceneSwitcherService sceneSwitcherService = _container.Resolve<SceneSwitcherService>();
                 ICoroutinesPerformer coroutinesPerformer = _container.Resolve<ICoroutinesPerformer>();
-                coroutinesPerformer.StartPerform(sceneSwitcherService.ProcessSwitchTo(Scenes.GamePlay, new GamePlayInputArgs(2))); 
+                coroutinesPerformer.StartPerform(
+                    sceneSwitcherService.ProcessSwitchTo(Scenes.GamePlay, new GamePlayInputArgs(2)));
             }
         }
     }
